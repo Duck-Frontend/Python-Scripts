@@ -15,7 +15,11 @@ def get_path_for_clean():
 
     print("Доступные директории:", ", ".join(directories))
 
-    path = input("\nВведите имя директории для отчистки: ")
+    path = input("\nВведите имя директории для отчистки или 'e' для выхода: ")
+
+    if path.lower() == "e":
+        return
+
     abs_path = os.path.abspath(path)
 
     if os.path.exists(path):
