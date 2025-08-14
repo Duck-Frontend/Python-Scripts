@@ -4,20 +4,16 @@
 
 
 import os
+import shutil
 
 
 def get_path_for_clean():
-    dirs = []
 
     print(f"Текущая директория: {os.getcwd()}")
 
-    for item in os.listdir():
-        if os.path.isdir(item):
-            dirs.append(item)
-    print("Директории в текущем каталоге:", end=" ")
+    directories = [d for d in os.listdir() if os.path.isdir(d)]
 
-    for catalog in dirs:
-        print(catalog, end=" ")
+    print("Доступные директории:", ", ".join(directories))
 
     path = input("\nВведите имя директории для отчистки: ")
     abs_path = os.path.abspath(path)
@@ -26,26 +22,34 @@ def get_path_for_clean():
         print("Начинаю отчистку")
         remove_all_files(abs_path)
     else:
-        print("Нет такого пути")
+        print(f"Нет такого пути: {path}")
+        get_path_for_clean()
 
 
 def remove_all_files(path):
-    os.chdir(path)
-    files = os.listdir()
+    all_items = [os.path.join(path, item) for item in os.listdir(path)]
+    files = [file for file in all_items if os.path.isfile(file)]
+    dirs = [d for d in all_items if os.path.isdir(d)]
 
-    for file in files:
-        print(file, sep=",", end=" ")
+    print(f"В данном каталоге {len(files)} и {len(dirs)} директорий")
 
-    answer = int(input("\nУдалить все эти файлы?\n1: Да 2: Нет\n: "))
+    confirm = input("\nУдалить ВСЁ содержимое? (y/n): ")
 
-    if answer == 1:
+    if confirm.lower() == "y":
         for file in files:
+            print(f"Удаляем файл: {os.path.basename(file)}")
             os.remove(file)
         else:
-            print("Все Файлы удалены")
+            print("Все файлы удалены!")
 
-    else:
-        print("Всего хорошего!")
+        for dir in dirs:
+            shutil.rmtree(dir)
+            print(f"Удалена директория: {os.path.basename(dir)}")
+        else:
+            print("Все директории удалены!")
+
+    print("\nУдаление прошло успешно!")
 
 
-get_path_for_clean()
+if __name__ == "__main__":
+    get_path_for_clean()
