@@ -7,17 +7,9 @@ import os
 
 
 def get_path_for_clean():
-    dirs = []
-
     print(f"Текущая директория: {os.getcwd()}")
-
-    for item in os.listdir():
-        if os.path.isdir(item):
-            dirs.append(item)
-    print("Директории в текущем каталоге:", end=" ")
-
-    for catalog in dirs:
-        print(catalog, end=" ")
+    directories = [d for d in os.listdir() if os.path.isdir(d)]
+    print("Доступные директории:", ", ".join(directories))
 
     path = input("\nВведите имя директории для отчистки: ")
     abs_path = os.path.abspath(path)
