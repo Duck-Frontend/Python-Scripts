@@ -7,6 +7,9 @@ import os
 import shutil
 
 
+skip_file = [".DS_Store", ".localized"]
+
+
 def get_path_for_clean():
 
     print(f"Текущая директория: {os.getcwd()}")
@@ -41,6 +44,8 @@ def remove_all_files(path):
 
     if confirm.lower() == "y":
         for file in files:
+            if file in skip_file:
+                continue
             print(f"Удаляем файл: {os.path.basename(file)}")
             os.remove(file)
         else:
